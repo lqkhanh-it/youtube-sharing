@@ -39,3 +39,5 @@ temp
 *.save.*
 
 *.lock
+
+README.ex.md

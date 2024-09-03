@@ -38,6 +38,6 @@ temp
 
 # ignore lock
 *.lock
-./package-lock.json
+package-lock.json
 
 README.ex.md

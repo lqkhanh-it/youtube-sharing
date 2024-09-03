@@ -27,9 +27,7 @@ coverage
 *.env copy
 
 #keys
-keys/*
-!keys/*.md
-!keys/*.example
+keys/*.pem
 
 #temp
 temp
@@ -38,4 +36,8 @@ temp
 *.save
 *.save.*
 
+# ignore lock
 *.lock
+package-lock.json
+
+README.ex.md

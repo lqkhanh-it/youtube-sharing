@@ -47,8 +47,10 @@ For setup database though Docker...
 
 _Required Docker Compose_
 
+Pull and setup Docker Database such as mongoDB and Redis
+You must change the config in `docker-compose.yml` to make it suitable with your environment
 ```sh
-docker-compose up
+docker-compose up -d
 ```
 
 ## Running the Application:
@@ -64,3 +66,4 @@ _A brief guide outlining how to use the application, including any specific feat
 _Common issues that may arise during setup and their potential solutions._
 
 - In case not found variables, change file's name `.env.example` to `.env`
+- To setup test, you must use `.env.test` and using certs in folder ./keys

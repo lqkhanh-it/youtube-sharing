@@ -1,4 +1,4 @@
-import { ACCESS_TOKEN_KEY, REFRESH_TOKEN_KEY } from './mock';
+import { ACCESS_TOKEN, REFRESH_TOKEN } from '@tests/auth/commonMock';
 import { validateTokenData, createTokens } from '@/auth/authUtils';
 import { JwtPayload } from '@/core/JWT';
 import { tokenInfo } from '@/config';
@@ -16,7 +16,7 @@ describe('authUtils validateTokenData tests', () => {
 			tokenInfo.issuer,
 			tokenInfo.audience,
 			'abc',
-			ACCESS_TOKEN_KEY,
+			ACCESS_TOKEN,
 			tokenInfo.accessTokenValidity,
 		);
 
@@ -48,7 +48,7 @@ describe('authUtils validateTokenData tests', () => {
 			tokenInfo.issuer,
 			tokenInfo.audience,
 			new Types.ObjectId().toHexString(), // Random Key
-			ACCESS_TOKEN_KEY,
+			ACCESS_TOKEN,
 			tokenInfo.accessTokenValidity,
 		);
 
@@ -68,8 +68,8 @@ describe('authUtils createTokens function', () => {
 
 		const tokens = await createTokens(
 			{ _id: userId } as User,
-			ACCESS_TOKEN_KEY,
-			REFRESH_TOKEN_KEY,
+			ACCESS_TOKEN,
+			REFRESH_TOKEN,
 		);
 
 		expect(tokens).toHaveProperty('accessToken');

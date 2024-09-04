@@ -1,10 +1,10 @@
 import { ACCESS_TOKEN, REFRESH_TOKEN } from '@tests/auth/commonMock';
-import { validateTokenData, createTokens } from '@/auth/authUtils';
-import { JwtPayload } from '@/core/JWT';
-import { tokenInfo } from '@/config';
+import { validateTokenData, createTokens } from '@auth/authUtils';
+import { JwtPayload } from '@core/JWT';
+import { tokenInfo } from '@config';
 import { Types } from 'mongoose';
-import { AuthFailureError } from '@/core/ApiError';
-import User from '@/database/model/User';
+import { AuthFailureError } from '@core/ApiError';
+import User from '@database/model/User';
 
 describe('authUtils validateTokenData tests', () => {
 	beforeAll(() => {

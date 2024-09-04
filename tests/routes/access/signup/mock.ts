@@ -1,6 +1,6 @@
 import { mockUserFindByEmail } from '@tests/routes/access/login/mock';
-import User from '@/database/model/User';
-import Keystore from '@/database/model/Keystore';
+import User from '@database/model/User';
+import Keystore from '@database/model/Keystore';
 import { Types } from 'mongoose';
 import bcrypt from 'bcrypt';
 
@@ -24,7 +24,7 @@ export const mockUserCreate = jest.fn(
 	},
 );
 
-jest.mock('@/database/repository/UserRepo', () => ({
+jest.mock('@database/repository/UserRepo', () => ({
 	findByEmail: mockUserFindByEmail, // already defined mock
 	create: mockUserCreate,
 }));

@@ -1,11 +1,12 @@
+import 'module-alias/register';
 import express, { Request, Response, Application, NextFunction } from 'express';
 import dotenv from 'dotenv';
+import 'dotenv/config';
 
-import Logger from '@/core/Logger';
+import Logger from '@core/Logger';
 import cors from 'cors';
 import { corsUrl, environment } from './config';
-import './database'; // initialize database
-import './cache'; // initialize cache
+// import './database'; // initialize database
 import {
 	NotFoundError,
 	ApiError,

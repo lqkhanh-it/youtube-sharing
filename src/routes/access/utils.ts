@@ -1,4 +1,4 @@
-import User from '@/database/model/User';
+import User from '@database/model/User';
 import pick from 'lodash/pick';
 
 export const enum AccessMode {

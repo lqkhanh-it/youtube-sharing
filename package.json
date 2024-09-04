@@ -2,14 +2,20 @@
 	"name": "backend",
 	"version": "1.0.0",
 	"description": "",
-	"main": "index.js",
+	"main": "app.js",
 	"_moduleAliases": {
-		"@/*": "./dist/*"
+		"@core": "./dist/core",
+		"@auth": "./dist/auth",
+		"@database": "./dist/database",
+		"@routes": "./dist/routes",
+		"@helpers": "./dist/helpers",
+		"@app": "./dist/app",
+		"@config": "./dist/config"
 	},
 	"scripts": {
-		"build": "npx tsc",
-		"start": "node dist/app.js",
-		"dev": "nodemon src/app.ts",
+		"build": "npx tsc --skipLibCheck",
+		"start": "npm run build && node dist/app.js",
+		"dev": "ts-node src/app.ts",
 		"format": "npx prettier . --write",
 		"check": "tsc --noEmit && npx prettier . --check",
 		"eslint": "npx eslint ./src",
@@ -38,7 +44,8 @@
 		"prettier": "^3.3.3",
 		"supertest": "^7.0.0",
 		"ts-jest": "^29.2.5",
-		"ts-node-dev": "^2.0.0",
+		"ts-node": "^10.9.2",
+		"tsconfig-paths": "^4.2.0",
 		"typescript": "^5.5.4",
 		"typescript-eslint": "^8.3.0"
 	},

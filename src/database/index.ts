@@ -1,11 +1,9 @@
 import mongoose from 'mongoose';
-import Logger from '@/core/Logger';
-import { db } from '@/config';
+import Logger from '@core/Logger';
+import { db } from './../config';
 
 // Build the connection string
-const dbURI = `mongodb://${db.user}:${encodeURIComponent(db.password)}@${
-	db.host
-}:${db.port}/${db.name}`;
+const dbURI = `mongodb://${db.user}:${encodeURIComponent(db.password)}@${db.host}:${db.port}`;
 
 const options = {
 	autoIndex: true,

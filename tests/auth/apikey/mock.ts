@@ -1,4 +1,4 @@
-import ApiKey from '@/database/model/ApiKey';
+import ApiKey from '@database/model/ApiKey';
 
 export const API_KEY = 'abc';
 
@@ -11,6 +11,6 @@ export const mockFindApiKey = jest.fn(async (key: string) => {
 	else return null;
 });
 
-jest.mock('@/database/repository/ApiKeyRepo', () => ({
+jest.mock('@database/repository/ApiKeyRepo', () => ({
 	findByKey: mockFindApiKey,
 }));

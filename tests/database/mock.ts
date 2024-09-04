@@ -1,1 +1,1 @@
-jest.mock('@/database', () => ({}));
+jest.mock('@database', () => ({}));

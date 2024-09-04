@@ -1,7 +1,7 @@
-import User, { UserModel } from '@/database/model/User';
+import User, { UserModel } from '@database/model/User';
 import { Types, UpdateWriteOpResult } from 'mongoose';
-import KeystoreRepo from '@/database/repository/KeystoreRepo';
-import Keystore from '@/database/model/Keystore';
+import KeystoreRepo from '@database/repository/KeystoreRepo';
+import Keystore from '@database/model/Keystore';
 
 async function exists(id: Types.ObjectId): Promise<boolean> {
 	const user = await UserModel.exists({ _id: id, status: true });

@@ -1,7 +1,7 @@
 import { describe, expect } from '@jest/globals';
 import { readFileSpy } from './mock';
-import JWT, { JwtPayload } from '@/core/JWT';
-import { BadTokenError, TokenExpiredError } from '@/core/ApiError';
+import JWT, { JwtPayload } from '@core/JWT';
+import { BadTokenError, TokenExpiredError } from '@core/ApiError';
 
 describe('JWT class tests', () => {
 	const issuer = 'issuer';

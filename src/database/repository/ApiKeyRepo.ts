@@ -1,4 +1,4 @@
-import ApiKey, { ApiKeyModel } from '@/database/model/ApiKey';
+import ApiKey, { ApiKeyModel } from '@database/model/ApiKey';
 
 async function findByKey(key: string): Promise<ApiKey | null> {
 	return ApiKeyModel.findOne({ key: key, status: true }).lean().exec();

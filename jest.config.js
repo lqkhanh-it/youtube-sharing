@@ -10,6 +10,12 @@ module.exports = {
 	],
 	moduleNameMapper: {
 		'^@tests/(.*)$': '<rootDir>/tests/$1',
-		'^@/(.*)$': '<rootDir>/src/$1',
+		'^@core/(.*)$': '<rootDir>/core/$1',
+		'^@auth/(.*)$': '<rootDir>/auth/$1',
+		'^@helpers/(.*)$': '<rootDir>/helpers/$1',
+		'^@routes/(.*)$': '<rootDir>/routes/$1',
+		'^@database/(.*)$': '<rootDir>/database/$1',
+		'^@app': '<rootDir>/app',
+		'^@config': '<rootDir>/config',
 	},
 };

@@ -16,7 +16,7 @@ import {
 } from './mock';
 
 import supertest from 'supertest';
-import app from '@/app';
+import app from '@app';
 
 describe('Signup basic route', () => {
 	const endpoint = '/api/v1/signup/basic';

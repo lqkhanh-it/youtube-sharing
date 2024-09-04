@@ -1,9 +1,9 @@
 import { USER_ID } from '@tests/auth/commonMock';
-import Keystore from '@/database/model/Keystore';
-import User from '@/database/model/User';
+import Keystore from '@database/model/Keystore';
+import User from '@database/model/User';
 import { Types } from 'mongoose';
 import bcrypt from 'bcrypt';
-import * as authUtils from '@/auth/authUtils';
+import * as authUtils from '@auth/authUtils';
 
 export const USER_EMAIL = 'random@test.com';
 export const USER_PASSWORD = 'abc123';
@@ -42,12 +42,12 @@ export const mockUserFindByEmail = jest.fn(
 	},
 );
 
-jest.mock('@/database/repository/KeystoreRepo', () => ({
+jest.mock('@database/repository/KeystoreRepo', () => ({
 	create: mockKeystoreCreate,
 }));
 
-jest.mock('@/database/repository/UserRepo', () => ({
+jest.mock('@database/repository/UserRepo', () => ({
 	findByEmail: mockUserFindByEmail,
 }));
 
-jest.unmock('@/auth/authUtils'); // remove any override made anywhere
+jest.unmock('@auth/authUtils'); // remove any override made anywhere

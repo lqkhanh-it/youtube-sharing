@@ -1,5 +1,5 @@
 # Here we are getting our node as Base image
-FROM node:alpine
+FROM node:20-alpine
 
 # create user in the docker image
 USER node

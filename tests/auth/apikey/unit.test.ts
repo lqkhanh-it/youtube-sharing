@@ -1,6 +1,6 @@
 import '@tests/database/mock';
 import { API_KEY, mockFindApiKey } from './mock';
-import app from '@/app';
+import app from '@app';
 import supertest from 'supertest';
 
 describe('apikey validation', () => {

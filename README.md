@@ -25,19 +25,11 @@ _Step-by-step instructions for cloning the repository, installing dependencies, 
 
 Required [Node.js](https://nodejs.org/) v10+ to run.
 
-Install the dependencies and devDependencies and start the server.
+Install the dependencies and devDependencies
 
 ```sh
 cd backend
 npm i
-npm run dev
-```
-
-For production environments...
-
-```sh
-npm install --production
-NODE_ENV=production npm run build & npm start
 ```
 
 ## Database Setup: 
@@ -55,12 +47,41 @@ docker-compose up -d
 
 ## Running the Application:
 _How to start the development server, access the application in a web browser, and run the test suite._
+After build and start database thought Docker you can run application
+
+Run development
+```sh
+    npm run dev
+```
+
+To build and run like production
+```sh
+    npm run start
+```
 
 ## (BE/FS) Docker Deployment: 
 _Instructions for deploying the application using Docker, including building the Docker image and running containers (optional for Backend developers)_
+Easy way to setup and build this app throw Docker
+
+You need to run code below to make sure your source can run 
+```sh
+npm run start
+```
+
+And then...
+_docker CLI required_
+```sh
+    docker buildx build ./ --tag v1
+```
+Now you application was built and run though image container 
 
 ## Usage
 _A brief guide outlining how to use the application, including any specific features or functionality the reviewer should be aware of_.
+
+### Create new API key to allow you application to access the BE
+    1. Use API `/api/v1/apikey/create` method POST to create your API KEY.
+    2. Push your API Key to Headers with key `x-api-key`
+
 
 ## Troubleshooting
 _Common issues that may arise during setup and their potential solutions._

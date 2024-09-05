@@ -6,7 +6,7 @@ import 'dotenv/config';
 import Logger from '@core/Logger';
 import cors from 'cors';
 import { corsUrl, environment } from './config';
-// import './database'; // initialize database
+import './database'; // initialize database
 import {
 	NotFoundError,
 	ApiError,

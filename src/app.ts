@@ -15,6 +15,8 @@ import {
 } from './core/ApiError';
 import routes from './routes';
 
+import './wss';
+
 //For env File
 dotenv.config();
 

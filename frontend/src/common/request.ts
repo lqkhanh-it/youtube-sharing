@@ -30,13 +30,13 @@ const request = {
 
   delete: <TResponse>(url: string) => fetchRequest<TResponse>(url, { method: 'DELETE' }),
 
-  post: <TBody, TResponse>(url: string, body: TBody) =>
+  post: <TBody, TResponse>(url: string, body?: TBody) =>
     fetchRequest<TResponse>(url, {
       method: 'POST',
       data: body,
     }),
 
-  put: <TBody, TResponse>(url: string, body: TBody) =>
+  put: <TBody, TResponse>(url: string, body?: TBody) =>
     fetchRequest<TResponse>(url, {
       method: 'PUT',
       data: body,
@@ -51,6 +51,7 @@ export enum ERequestStatus {
 }
 
 export enum HttpPaths {
+  LOGOUT = '/logout',
   LOGIN = '/login/basic',
   SIGNUP = '/signup/basic',
   REFRESH_TOKEN = '/token/refresh',

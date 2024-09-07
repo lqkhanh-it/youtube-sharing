@@ -1,13 +1,50 @@
-import React from 'react';
-import { Form, Input, Button, Typography, Space } from 'antd';
+import React, { useEffect } from 'react';
+import { Form, Input, Button, Typography, Space, message } from 'antd';
 import { UserOutlined, LockOutlined, MailOutlined } from '@ant-design/icons';
-import request, { HttpPaths } from '../../common/request';
+import { ERequestStatus } from '../../common/request';
 import './signup.scss';
 import { hashPassword } from '../../common/encrypt';
+import { useAppDispatch, useAppSelector } from '../../store/hooks';
+import { createUser, fetchUsers, selectStatus, selectUser } from '../../store/slices/user.slice';
 
 const { Title } = Typography;
 
-const SignUp: React.FC = () => {
+const SignUp: React.FC<{ callback: () => void }> = ({ callback }) => {
+  const userStatus = useAppSelector(selectStatus);
+  const dispatch = useAppDispatch();
+  const [loading, setLoading] = React.useState(false);
+  const user = useAppSelector(selectUser);
+
+  useEffect(() => {
+    dispatch(fetchUsers());
+  }, [dispatch]);
+
+  useEffect(() => {
+    if (user) {
+      callback();
+    }
+  }, [user, callback]);
+
+  useEffect(() => {
+    setLoading(false);
+    switch (userStatus) {
+      case ERequestStatus.IDLE:
+        break;
+      case ERequestStatus.LOADING:
+        setLoading(true);
+        break;
+      case ERequestStatus.SUCCEEDED:
+        message.success('User created successfully');
+        callback();
+        break;
+      case ERequestStatus.FAILED:
+        message.error('User creation failed');
+        break;
+      default:
+        return undefined;
+    }
+  }, [userStatus]);
+
   const onFinish = (values: {
     name: string;
     email: string;
@@ -25,17 +62,9 @@ const SignUp: React.FC = () => {
       console.log('Passwords do not match');
       return;
     }
-
     const hashedPassword = hashPassword(password);
-
-    request
-      .post(HttpPaths.SIGNUP, { name, email, password: hashedPassword })
-      .then((res) => {
-        console.log('User registered successfully:', res);
-      })
-      .catch((err) => {
-        console.log('Error during sign-up:', err);
-      });
+    dispatch(createUser({ name, email, password: hashedPassword }));
+    setLoading(true);
   };
 
   return (
@@ -56,7 +85,6 @@ const SignUp: React.FC = () => {
             { type: 'email', message: 'Please enter a valid email!' },
           ]}
         >
-          {/* use another icon */}
           <Input type="email" size="large" prefix={<MailOutlined />} placeholder="Email" />
         </Form.Item>
 
@@ -64,7 +92,12 @@ const SignUp: React.FC = () => {
           name="password"
           rules={[{ required: true, message: 'Please input your Password!' }]}
         >
-          <Input.Password size="large" prefix={<LockOutlined />} placeholder="Password" />
+          <Input.Password
+            disabled={loading}
+            size="large"
+            prefix={<LockOutlined />}
+            placeholder="Password"
+          />
         </Form.Item>
 
         <Form.Item
@@ -82,11 +115,22 @@ const SignUp: React.FC = () => {
             }),
           ]}
         >
-          <Input.Password size="large" prefix={<LockOutlined />} placeholder="Confirm Password" />
+          <Input.Password
+            disabled={loading}
+            size="large"
+            prefix={<LockOutlined />}
+            placeholder="Confirm Password"
+          />
         </Form.Item>
 
         <Form.Item>
-          <Button size="large" type="primary" htmlType="submit" className="signup-form-button">
+          <Button
+            loading={loading}
+            size="large"
+            type="primary"
+            htmlType="submit"
+            className="signup-form-button"
+          >
             Sign Up
           </Button>
         </Form.Item>

@@ -11,8 +11,6 @@ This is a video sharing app with source from youtube. In this website, users can
 
 
 ## Prerequisites: 
-_List required software and tools, along with their appropriate versions._
-
 There are some technology used in this project:
 
 ### Backend Libraries
@@ -45,55 +43,172 @@ There are some technology used in this project:
 - [**react-redux**](https://react-redux.js.org/) - ^9.1.0 - Official React bindings for Redux, enabling React components to read from and dispatch actions to a Redux store.
 - [**react-router-dom**](https://reactrouter.com/) - 6.22.2 - Declarative routing library for React, designed for creating single-page applications (SPA).
 
+### Folder Structure
 
-## Installation & Configuration: 
-Required [Node.js](https://nodejs.org/) v10+ to run.
+Folder structure should look like this;
+
+```
+src/
+├── app.ts
+├── config.ts
+├── .env
+├── wss
+│   └── index.ts
+├── types
+│   └── %typeName%.d.ts
+├── helpers
+│   └── %helperName%.scss
+├── routes
+│   ├── %ModuleName%
+│   │   ├── index.ts
+│   │   ├── schema.ts
+│   └── index.tsx (router)
+├── database
+│   ├── model
+│   │   └── %modmodelName%.ts
+│   ├── repository
+│   │   └── %repoName%.ts
+│   └── index.ts
+├── cache
+│   └── index.ts
+├── core
+│   └── %coreName%.ts
+└── auth
+    └── %authName%.ts
+
+```
+
+### Test Folder
+
+```
+test/
+├── setup.ts
+├── .env
+├── routes %ModuleName%
+│   └── %ModuleName%
+│       ├── mock.ts
+│       └── unit.test.ts
+├── database
+│   └── mock.ts
+├── core %ModuleName%
+│   └── %ModuleName%
+│       ├── mock.ts
+│       └── unit.test.ts
+└── auth %ModuleName%
+    └── %ModuleName%
+        ├── mock.ts
+        └── unit.test.ts
+```
+
+
+## Installation & Configuration:
+Required [Node.js](https://nodejs.org/) v16+ to run.
 
 Install the dependencies and devDependencies
 
+### Backend
 ```sh
 cd backend
 npm i
 ```
 
+### Frontend
+```sh
+cd youtube-sharing
+cd frontend
+npm i
+```
+
+For Production install...
+```sh
+npm i --production
+```
+or 
+```sh
+set NODE_ENV=production npm i
+```
+
+Next step
+- Copy file `.env.example` and change name to `.env`
+- Edit `.env` file to suitable with your environment
+
 ## Database Setup: 
 For setup database though Docker...
 
-_Required Docker Compose_
+Required [Docker & Docker Compose](https://www.docker.com/) to run.
 
-Pull and setup Docker Database such as mongoDB and Redis
 You must change the config in `docker-compose.yml` to make it suitable with your environment
+
+_Some line you need to change in `docker-compose.yml`_ 
+- line `51` and `63`: there are local space where storing your data in docker
+
+To Pull and setup Docker Database such as mongoDB and Redis
 ```sh
 docker-compose up -d
 ```
+> This is sample database and you can run docker compose again when you
+> already build your application successfully.
+
 
 ## Running the Application:
 After build and start database thought Docker you can run application
+You need to change port in `.env` file at Frontend repo if you already changed it in backend repo
 
 Run development
+_You can run this command for both frontend and backend_
 ```sh
-    npm run dev
+npm run dev
 ```
 
 To build and run like production
 ```sh
-    npm run start
+npm run start
 ```
+
+### Test
+
+#### Backend 
+To run test in Backend repo run 
+
+Test all file test
+```sh
+npm run test
+```
+
+Test one file only
+```sh
+npm run test ./tests/pathtoyourfile
+```
+
+### Frontend
+_Coming soon_
+
+### API with Postman
+In folder `<root>/postman` using `auth.postman_collection.json` and `remi.postman_environment.json` 
+To setup your environment test through Postman
 
 ## (BE/FS) Docker Deployment: 
 Easy way to setup and build this app throw Docker
 
+### Backend 
 You need to run code below to make sure your source can run 
 ```sh
+npm run eslint
+npm run format
+npm run check
 npm run start
 ```
 
 And then...
 _docker CLI required_
 ```sh
-    docker buildx build ./ --tag v1
+docker buildx build ./ --tag v1
 ```
 Now you application was built and run though image container 
+
+### Frontend
+_Coming soon_
+
 
 ## Usage
 
@@ -101,8 +216,38 @@ Now you application was built and run though image container
     1. Use API `/api/v1/apikey/create` method POST to create your API KEY.
     2. Push your API Key to Headers with key `x-api-key`
 
+### Create new certificates
+- You need to create new certificates for JWT
+
+##### You can generate these keys at
+[RSA Key Generator](https://cryptotools.net/rsagen)
+
+
+#### For CLI generation follow this doc
+[Github - How to generate JWT RS256 key](https://gist.github.com/ygotthilf/baa58da5c3dd1f69fae9)
+
+> You can copy current certificate in folder `keys` and change name following file readme.md in this folder
+
+### Using website
+
+After start your localhost you can see home page
+![Home Page](/images/home.png "Home Page")
+
+Click Sign Up [Top - Right] to Create new User account and then you can share video by yourself
+![Sign Up](/images/signup.png.png "Sign Up")
+
+After register, you need to login to share video
+![Login](/images/login.png "Login")
+
+This view is Home Page after you logged in and you can logout with logout button on the top right
+![Logged In](/images/logged-in.png "Logged In")
+
+Click Share Video on the top right to share your interested videos
+![Share Video](/images/logged-in.png "Share Video")
+
 
 ## Troubleshooting
 
 - In case not found variables, change file's name `.env.example` to `.env`
-- To setup test, you must use `.env.test` and using certs in folder ./keys
+- To setup test, you must use `.env.test` and using certs in folder `./keys`
+

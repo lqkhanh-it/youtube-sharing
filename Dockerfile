@@ -19,11 +19,11 @@ RUN yarn build
 FROM base AS prod
 WORKDIR /usr/src/app
 ENV NODE_ENV production
-COPY --from=builder /usr/src/app/ ./
+COPY --from=builder /usr/src/app ./
 RUN yarn --production
 EXPOSE 4444 8888
 ENV PORT 4444
 ENV PORT_WS 8888
-CMD node app.js
+CMD node dist/app.js
 
 #ref https://medium.com/@swappy20_61978/how-to-reduce-your-node-docker-image-size-by-90-for-production-2df3e19b2940

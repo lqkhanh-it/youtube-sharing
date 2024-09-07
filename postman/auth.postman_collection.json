@@ -1,0 +1,219 @@
+{
+	"info": {
+		"_postman_id": "c061017e-a166-400a-9abc-494637802c09",
+		"name": "auth",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "15435711"
+	},
+	"item": [
+		{
+			"name": "signup",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "x-api-key",
+						"value": "{{apikey}}",
+						"type": "default"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"kieran\",\r\n    \"email\": \"kieran@gmail.com\",\r\n    \"profilePicUrl\": \"https://fiam.com/aaa.png\",\r\n    \"password\": \"rest111\"   \r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{host}}:{{port}}{{version}}/signup/basic",
+					"host": [
+						"{{host}}"
+					],
+					"port": "{{port}}{{version}}",
+					"path": [
+						"signup",
+						"basic"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "create apikey",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"version\": 1,\r\n    \"comments\": \"test\",\r\n    \"status\": true\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{host}}:{{port}}{{version}}/apikey/create",
+					"host": [
+						"{{host}}"
+					],
+					"port": "{{port}}{{version}}",
+					"path": [
+						"apikey",
+						"create"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "login",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "x-api-key",
+						"value": "{{apikey}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"email\": \"kieran@gmail.com\",\r\n    \"password\": \"rest111\"   \r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{host}}:{{port}}{{version}}/login/basic",
+					"host": [
+						"{{host}}"
+					],
+					"port": "{{port}}{{version}}",
+					"path": [
+						"login",
+						"basic"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "logout",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{accessToken}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "x-api-key",
+						"value": "{{apikey}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{host}}:{{port}}{{version}}/logout",
+					"host": [
+						"{{host}}"
+					],
+					"port": "{{port}}{{version}}",
+					"path": [
+						"logout"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "refreshtoken",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{accessToken}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "x-api-key",
+						"value": "{{apikey}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"refreshToken\": {{refreshToken}}\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{host}}:{{port}}{{version}}/token/refresh",
+					"host": [
+						"{{host}}"
+					],
+					"port": "{{port}}{{version}}",
+					"path": [
+						"token",
+						"refresh"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "health",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "1144",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "x-api-key",
+						"value": "{{apikey}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{host}}:{{port}}{{version}}/health/check",
+					"host": [
+						"{{host}}"
+					],
+					"port": "{{port}}{{version}}",
+					"path": [
+						"health",
+						"check"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

@@ -6,7 +6,7 @@ import { parseUrl } from '@helpers/videoParsing';
 import { formatWssMessage, MessageType } from '@helpers/wssMessage';
 
 const wss = new WebSocketServer({
-	port: 8080,
+	port: Number(process.env.PORT_WS),
 });
 
 wss.on('listening', () => {

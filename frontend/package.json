@@ -9,8 +9,7 @@
     "lint": "yarn run lint:ts",
     "lint:ts": "tsc && yarn lint:eslint",
     "lint:eslint": "eslint 'src/**/*.{ts,tsx}'",
-    "format:ts": "prettier --write 'src/**/*.{ts,tsx}' && yarn lint:eslint --fix",
-    "format": "yarn run format:ts",
+    "format": "prettier --write 'src/**/*.{ts,tsx}' && yarn lint:eslint --fix",
     "format:check": "prettier -c 'src/**/*.{ts,tsx}'",
     "test": "jest"
   },

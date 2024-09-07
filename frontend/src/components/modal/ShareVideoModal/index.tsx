@@ -23,7 +23,7 @@ const ShareVideoModal: React.FC = () => {
         Share Video
       </Button>
       <Modal open={isModalOpen} onOk={handleOk} onCancel={handleCancel} footer={null}>
-        <ShareVideo callback={handleOk} />
+        <ShareVideo />
       </Modal>
     </>
   );

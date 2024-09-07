@@ -36,38 +36,21 @@ export const fetchUser = createAsyncThunk('user/getUser', async () => {
   return data?.user;
 });
 
-export const logoutUser = createAsyncThunk(
-  'user/login',
-  async () =>
-    new Promise((resolve, reject) => {
-      request
-        .post(HttpPaths.LOGOUT)
-        .then(() => {
-          localStorage.removeItem(USER_KEY);
-          resolve(true);
-        })
-        .catch((err) => {
-          console.error('Request failed:', err);
-          reject(err);
-        });
-    }),
-);
+export const logoutUser = createAsyncThunk('user/logout', async () => {
+  await request.post(HttpPaths.LOGOUT);
+  localStorage.removeItem(USER_KEY);
+});
 
 export const loginUser = createAsyncThunk(
-  'user/logout',
-  async (user: Pick<User, 'email' | 'password'>) =>
-    new Promise((resolve, reject) => {
-      request
-        .post(HttpPaths.LOGIN, { email: user.email, password: user.password })
-        .then((res) => {
-          localStorage.setItem(USER_KEY, JSON.stringify(res));
-          resolve(res);
-        })
-        .catch((err) => {
-          console.error('Request failed:', err);
-          reject(err);
-        });
-    }),
+  'user/login',
+  async (user: Pick<User, 'email' | 'password'>) => {
+    const res: UserSignUpResponse = await request.post(HttpPaths.LOGIN, {
+      email: user.email,
+      password: user.password,
+    });
+    localStorage.setItem(USER_KEY, JSON.stringify(res?.data));
+    return res?.data?.user;
+  },
 );
 
 interface UserSignUpResponse {
@@ -79,13 +62,14 @@ interface UserSignUpResponse {
 
 export const createUser = createAsyncThunk(
   'user/createUser',
-  (user: Pick<User, 'name' | 'email' | 'password'>) =>
+  async (user: Pick<User, 'name' | 'email' | 'password'>) =>
     new Promise((resolve, reject) => {
       request
         .post(HttpPaths.SIGNUP, user)
-        .then((res: UserSignUpResponse) => {
-          localStorage.setItem(USER_KEY, JSON.stringify(res?.data));
-          resolve(res?.data?.user);
+        .then((res) => {
+          const response = res as UserSignUpResponse;
+          localStorage.setItem(USER_KEY, JSON.stringify(response?.data));
+          resolve(response?.data?.user);
         })
         .catch((err) => {
           console.error('Error during sign-up:', err);
@@ -94,7 +78,7 @@ export const createUser = createAsyncThunk(
           }
           reject(err);
         });
-    }),
+    }) as Promise<User>,
 );
 
 export const resetUserStatus = createAction('user/resetStatus', () => ({
@@ -126,7 +110,7 @@ export const userSlice = createSlice({
       .addCase(loginUser.fulfilled, (_state, action) => {
         const state = _state;
         state.status = ERequestStatus.SUCCEEDED;
-        state.user = action.payload;
+        state.user = action.payload as User;
       })
       .addCase(logoutUser.fulfilled, (_state) => {
         const state = _state;

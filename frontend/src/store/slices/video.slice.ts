@@ -13,8 +13,8 @@ export interface Video {
   imgUrl?: string;
   status?: boolean;
   videoUrl: string;
-  createdAt?: Date;
-  updatedAt?: Date;
+  createdAt?: string;
+  updatedAt?: string;
 }
 
 export interface IVideoState {

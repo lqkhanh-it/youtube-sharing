@@ -37,13 +37,14 @@ const HomePage: React.FC = () => {
                     <Text className="video-author">Shared by: {video.author?.email}</Text>
                     <br />
                     <Text type="secondary">
-                      {new Date(video.createdAt).toLocaleString('en-US', {
-                        year: 'numeric',
-                        month: 'long',
-                        day: 'numeric',
-                        hour: 'numeric',
-                        minute: 'numeric',
-                      })}
+                      {video?.createdAt &&
+                        new Date(video?.createdAt).toLocaleString('en-US', {
+                          year: 'numeric',
+                          month: 'long',
+                          day: 'numeric',
+                          hour: 'numeric',
+                          minute: 'numeric',
+                        })}
                     </Text>
                     <br />
                     <Text className="video-description">{video.description}</Text>

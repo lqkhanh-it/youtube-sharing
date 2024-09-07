@@ -1,7 +1,7 @@
 import { describe, expect } from '@jest/globals';
 import { readFileSpy } from './mock';
-import JWT, { JwtPayload } from '@/core/JWT';
-import { BadTokenError, TokenExpiredError } from '@/core/ApiError';
+import JWT, { JwtPayload } from '@core/JWT';
+import { BadTokenError, TokenExpiredError } from '@core/ApiError';
 
 describe('JWT class tests', () => {
 	const issuer = 'issuer';
@@ -33,16 +33,11 @@ describe('JWT class tests', () => {
 	});
 
 	it('Should decode a valid token for JWT.decode', async () => {
-		const payload = new JwtPayload(
-			issuer,
-			audience,
-			subject,
-			param,
-			validity,
-		) as JwtPayload;
+		const payload = new JwtPayload(issuer, audience, subject, param, validity);
 		const token = await JWT.encode(payload);
 		const decoded = await JWT.decode(token);
 
+		// @ts-ignore
 		expect(decoded).toMatchObject(payload);
 		expect(readFileSpy).toHaveBeenCalledTimes(2);
 	});
@@ -87,6 +82,7 @@ describe('JWT class tests', () => {
 		const token = await JWT.encode(payload);
 		const decoded = await JWT.validate(token);
 
+		// @ts-ignore
 		expect(decoded).toMatchObject(payload);
 		expect(readFileSpy).toHaveBeenCalledTimes(2);
 	});

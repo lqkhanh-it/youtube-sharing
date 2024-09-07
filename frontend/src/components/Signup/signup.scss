@@ -1,0 +1,20 @@
+.signup-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  .signup-form {
+    width: 400px;
+    padding: 20px;
+    background-color: white;
+    border-radius: 8px;
+
+    .ant-form-item {
+      margin-bottom: 16px;
+    }
+    .signup-form-button {
+      margin-top: 1rem;
+      width: 100%;
+    }
+  }
+}

@@ -250,4 +250,7 @@ Click Share Video on the top right to share your interested videos
 
 - In case not found variables, change file's name `.env.example` to `.env`
 - To setup test, you must use `.env.test` and using certs in folder `./keys`
+- I try to optimize docker build but I have some problems with my environment and it take 10 minutes for running build so I will push it into TODO list
+- I spent a lot of time to setup backend and alias path. That is why my Front end did not have alias and full test file
+- My websocket not work like my expected that why I push it in the other port and using search param to push token 
 

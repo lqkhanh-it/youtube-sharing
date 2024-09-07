@@ -42,6 +42,7 @@ const Login: React.FC<{ callback: () => void }> = ({ callback }) => {
       case ERequestStatus.SUCCEEDED:
         message.success('Login successfully');
         form.resetFields();
+        window.location.reload();
         if (callback) {
           callback();
         }

@@ -1,9 +1,10 @@
 import mongoose from 'mongoose';
 import Logger from '@core/Logger';
-import { db } from './../config';
+import { db, environment } from './../config';
 
 // Build the connection string
-const dbURI = `mongodb://${db.user}:${encodeURIComponent(db.password)}@${db.host}:${db.port}`;
+const dbURIDev = `mongodb://${db.user}:${encodeURIComponent(db.password)}@${db.host}:${db.port}`;
+const dbURIProd = `mongodb+srv://${db.user}:${db.password}@${db.host}/?retryWrites=true&w=majority&appName=Cluster0`;
 
 const options = {
 	autoIndex: true,
@@ -12,6 +13,8 @@ const options = {
 	connectTimeoutMS: 60000, // 10 seconds
 	socketTimeoutMS: 45000, // 45 seconds
 };
+
+const dbURI = environment === 'production' ? dbURIProd : dbURIDev;
 
 Logger.debug(dbURI);
 

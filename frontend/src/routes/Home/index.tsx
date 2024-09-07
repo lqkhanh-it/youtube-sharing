@@ -1,6 +1,6 @@
 import React from 'react';
 import { List, Card, Row, Col, Typography, Image, Space } from 'antd';
-// import ReactPlayer from 'react-player';
+import ReactPlayer from 'react-player';
 import './home.scss';
 import { useAppSelector } from '../../store/hooks';
 import { selectVideos } from '../../store/slices/video.slice';
@@ -25,8 +25,16 @@ const HomePage: React.FC = () => {
                     direction="vertical"
                     style={{ width: '100%', height: '100%', justifyContent: 'center' }}
                   >
-                    {/* <ReactPlayer url={video?.videoUrl} width="100%" height="200px" /> */}
-                    <Image preview={false} src={video?.imgUrl} alt="Video thumbnail" width="100%" />
+                    {video?.imgUrl ? (
+                      <Image
+                        preview={false}
+                        src={video?.imgUrl}
+                        alt="Video thumbnail"
+                        width="100%"
+                      />
+                    ) : (
+                      <ReactPlayer url={video?.videoUrl} width="100%" height="200px" />
+                    )}
                   </Space>
                 </Col>
                 <Col xs={24} md={12} lg={14}>

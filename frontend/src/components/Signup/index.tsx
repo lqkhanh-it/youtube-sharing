@@ -41,6 +41,7 @@ const SignUp: React.FC<{ callback: () => void }> = ({ callback }) => {
         break;
       case ERequestStatus.SUCCEEDED:
         message.success('User created successfully');
+        window.location.reload();
         if (callback) {
           callback();
         }

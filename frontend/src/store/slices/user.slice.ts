@@ -37,8 +37,8 @@ export const fetchUser = createAsyncThunk('user/getUser', async () => {
 });
 
 export const logoutUser = createAsyncThunk('user/logout', async () => {
-  await request.post(HttpPaths.LOGOUT);
   localStorage.removeItem(USER_KEY);
+  await request.post(HttpPaths.LOGOUT);
 });
 
 export const loginUser = createAsyncThunk(

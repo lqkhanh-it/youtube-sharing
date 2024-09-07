@@ -1,7 +1,6 @@
-import bcrypt from 'bcryptjs';
+import { Buffer } from 'buffer';
 
 export function hashPassword(password: string) {
-  const salt = bcrypt.genSaltSync(5);
-  const hashed = bcrypt.hashSync(password, salt);
+  const hashed = Buffer.from(password).toString('base64');
   return hashed;
 }

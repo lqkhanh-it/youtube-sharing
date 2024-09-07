@@ -9,6 +9,7 @@ const axiosInstance = axios.create({
   headers: {
     'Content-Type': 'application/json;charset=UTF-8',
     'x-api-key': apiKey,
+    authorization: `Bearer ${apiKey}`,
   },
 });
 
@@ -17,7 +18,18 @@ const fetchRequest = async <TResponse>(
   config: AxiosRequestConfig = {},
 ): Promise<TResponse> => {
   try {
-    const response: AxiosResponse<TResponse> = await axiosInstance(url, config);
+    const data = localStorage.getItem('user') as string;
+    const tempConfig = { ...config };
+
+    if (data) {
+      const tokens = JSON.parse(data)?.tokens;
+      tempConfig.headers = {
+        ...config.headers,
+        authorization: `Bearer ${tokens?.accessToken}`,
+      };
+    }
+
+    const response: AxiosResponse<TResponse> = await axiosInstance(url, tempConfig);
     return response.data;
   } catch (error) {
     console.error('Request failed:', error);

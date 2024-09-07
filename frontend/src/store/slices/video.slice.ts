@@ -1,13 +1,15 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { message } from 'antd';
+import { createAction, createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import wsHelper from '../../common/websocket';
 import type { RootState } from '..';
-import request, { ERequestStatus, HttpPaths } from '../../common/request';
+import { ERequestStatus } from '../../common/request';
 import { User } from './user.slice';
 
 export interface Video {
   _id: string;
   title: string;
   description: string;
-  author: string | User;
+  author: User;
   imgUrl?: string;
   status?: boolean;
   videoUrl: string;
@@ -16,46 +18,49 @@ export interface Video {
 }
 
 export interface IVideoState {
-  video: Video[] | null;
+  videos: Video[];
   status: ERequestStatus;
 }
 
 const initialState: IVideoState = {
-  video: null,
+  videos: [],
   status: ERequestStatus.IDLE,
 };
 
-export const fetchVideo = createAsyncThunk('video/fetchVideo', async () => []);
+export const shareVideo = createAsyncThunk('video/shareVideo', (url: string) => {
+  wsHelper.sendMessage(url);
+  message.success('Video shared!');
+});
 
-export const shareVideo = createAsyncThunk(
-  'video/shareVideo',
-  (user: Pick<User, 'name' | 'email' | 'password'>) =>
-    new Promise((resolve, reject) => {
-      request
-        .post(HttpPaths.SIGNUP, user)
-        .then((res) => {
-          resolve(res as User);
-        })
-        .catch((err) => {
-          console.log('Error during sign-up:', err);
-          reject(err);
-        });
-    }),
-);
+export const addVideo = createAction('video/addVideo', (video: Video[]) => ({
+  payload: video,
+}));
 
 export const videoSlice = createSlice({
   name: 'video',
   initialState,
   reducers: {},
   extraReducers: (builder) => {
-    builder.addCase(fetchVideo.rejected, (_state) => {
+    builder.addCase(addVideo, (_state, action) => {
+      const state = _state;
+      state.videos = [...action.payload, ...state.videos];
+    });
+    builder.addCase(shareVideo.rejected, (_state) => {
       const state = _state;
       state.status = ERequestStatus.FAILED;
+    });
+    builder.addCase(shareVideo.fulfilled, (_state) => {
+      const state = _state;
+      state.status = ERequestStatus.SUCCEEDED;
+    });
+    builder.addCase(shareVideo.pending, (_state) => {
+      const state = _state;
+      state.status = ERequestStatus.LOADING;
     });
   },
 });
 
-export const selectVideos = (state: RootState) => state.video;
-export const selectStatus = (state: RootState) => state.users.status;
+export const selectVideos = (state: RootState) => state.videos.videos;
+export const selectStatus = (state: RootState) => state.videos.status;
 
 export default videoSlice.reducer;

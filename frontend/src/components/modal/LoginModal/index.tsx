@@ -22,7 +22,13 @@ const LoginModal: React.FC = () => {
       <Button type="primary" onClick={showModal}>
         Login
       </Button>
-      <Modal open={isModalOpen} onOk={handleOk} onCancel={handleCancel} footer={null}>
+      <Modal
+        open={isModalOpen}
+        onOk={handleOk}
+        onCancel={handleCancel}
+        footer={null}
+        destroyOnClose
+      >
         <Login callback={handleOk} />
       </Modal>
     </>

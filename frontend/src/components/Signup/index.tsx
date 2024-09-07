@@ -5,25 +5,31 @@ import { ERequestStatus } from '../../common/request';
 import './signup.scss';
 import { hashPassword } from '../../common/encrypt';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
-import { createUser, fetchUsers, selectStatus, selectUser } from '../../store/slices/user.slice';
+import {
+  createUser,
+  resetUserStatus,
+  selectStatus,
+  selectUser,
+} from '../../store/slices/user.slice';
 
 const { Title } = Typography;
 
 const SignUp: React.FC<{ callback: () => void }> = ({ callback }) => {
+  const [form] = Form.useForm();
   const userStatus = useAppSelector(selectStatus);
   const dispatch = useAppDispatch();
   const [loading, setLoading] = React.useState(false);
   const user = useAppSelector(selectUser);
 
   useEffect(() => {
-    dispatch(fetchUsers());
-  }, [dispatch]);
-
-  useEffect(() => {
     if (user) {
       callback();
     }
   }, [user, callback]);
+
+  useEffect(() => {
+    form.resetFields();
+  }, []);
 
   useEffect(() => {
     setLoading(false);
@@ -35,15 +41,20 @@ const SignUp: React.FC<{ callback: () => void }> = ({ callback }) => {
         break;
       case ERequestStatus.SUCCEEDED:
         message.success('User created successfully');
-        callback();
+        if (callback) {
+          callback();
+        }
         break;
       case ERequestStatus.FAILED:
-        message.error('User creation failed');
         break;
       default:
         return undefined;
     }
-  }, [userStatus]);
+    return () => {
+      setLoading(false);
+      dispatch(resetUserStatus());
+    };
+  }, [userStatus, callback]);
 
   const onFinish = (values: {
     name: string;

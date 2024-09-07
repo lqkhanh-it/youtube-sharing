@@ -4,8 +4,8 @@ import userReducer from './slices/user.slice';
 
 export const store = configureStore({
   reducer: {
-    video: videoReducer,
-    users: userReducer,
+    videos: videoReducer,
+    user: userReducer,
   },
 });
 

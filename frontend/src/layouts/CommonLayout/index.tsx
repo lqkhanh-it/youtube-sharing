@@ -19,7 +19,7 @@ const CommonLayout: React.FC<CommonLayoutProps> = ({ children }) => {
         <div className="site-layout-content">{children}</div>
       </Content>
 
-      <Footer className="footer">©2024 MyBrand. All rights reserved.</Footer>
+      <Footer className="footer">©2024 Funny Movies. All rights reserved.</Footer>
     </Layout>
   );
 };

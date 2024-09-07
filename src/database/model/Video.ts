@@ -58,7 +58,6 @@ const schema = new Schema<Video>(
 		createdAt: {
 			type: Date,
 			required: true,
-			select: false,
 		},
 		updatedAt: {
 			type: Date,

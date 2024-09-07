@@ -1,4 +1,4 @@
-import { authenticate } from '@auth/authentication';
+import { wsAuthenticate } from '@auth/authentication';
 import Logger from '@core/Logger';
 import WebSocket, { WebSocketServer } from 'ws';
 import VideoRepo from '@database/repository/VideoRepo';
@@ -14,18 +14,17 @@ wss.on('listening', () => {
 });
 
 wss.on('connection', async (ws, request) => {
-	await authenticate(request, {}, () => {
-		VideoRepo.findLatestVideos(1, 10).then((videos) => {
-			ws.send(
-				formatWssMessage(JSON.stringify(videos), MessageType.VIDEO_UPDATE),
-			);
-		});
-	}).catch((err) => {
-		Logger.error(err?.message);
-		ws.send(err?.message);
-		ws.terminate();
+	wsAuthenticate(request, {}, () => {});
+
+	VideoRepo.findLatestVideos(1, 10).then((videos) => {
+		ws.send(formatWssMessage(JSON.stringify(videos), MessageType.VIDEO_UPDATE));
 	});
 	ws.on('message', async (data) => {
+		// @ts-ignore
+		if (!request?.user) {
+			ws.send(formatWssMessage('Unauthorized', MessageType.RESPONSE));
+			return;
+		}
 		const url = data.toString();
 		const [title, description, thumbnail] = await parseUrl(url);
 
@@ -43,9 +42,9 @@ wss.on('connection', async (ws, request) => {
 			ws.send(
 				formatWssMessage('Video could not be shared!', MessageType.RESPONSE),
 			);
-			return;
+		} else {
+			ws.send(formatWssMessage('Video shared', MessageType.RESPONSE));
 		}
-		ws.send(formatWssMessage('Video shared', MessageType.RESPONSE));
 
 		wss.clients.forEach((client) => {
 			if (client?.readyState === WebSocket.OPEN) {
@@ -55,7 +54,7 @@ wss.on('connection', async (ws, request) => {
 					);
 				}
 				client.send(
-					formatWssMessage(JSON.stringify(vid), MessageType.VIDEO_UPDATE),
+					formatWssMessage(JSON.stringify([vid]), MessageType.VIDEO_UPDATE),
 				);
 			}
 		});

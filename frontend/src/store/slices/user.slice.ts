@@ -1,4 +1,5 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { message } from 'antd';
+import { createAsyncThunk, createSlice, createAction } from '@reduxjs/toolkit';
 import type { RootState } from '..';
 import request, { ERequestStatus, HttpPaths } from '../../common/request';
 
@@ -25,9 +26,14 @@ const initialState: IUserState = {
   status: ERequestStatus.IDLE,
 };
 
-export const fetchUsers = createAsyncThunk('user/getUser', async () => {
-  const user = localStorage.getItem(USER_KEY);
-  return user;
+interface UserToken {
+  acecessToken: string;
+  refreshToken: string;
+}
+
+export const fetchUser = createAsyncThunk('user/getUser', async () => {
+  const data = JSON.parse(localStorage.getItem(USER_KEY) as string);
+  return data?.user;
 });
 
 export const logoutUser = createAsyncThunk(
@@ -64,23 +70,36 @@ export const loginUser = createAsyncThunk(
     }),
 );
 
+interface UserSignUpResponse {
+  data: {
+    token: UserToken;
+    user: User;
+  };
+}
+
 export const createUser = createAsyncThunk(
   'user/createUser',
   (user: Pick<User, 'name' | 'email' | 'password'>) =>
     new Promise((resolve, reject) => {
       request
         .post(HttpPaths.SIGNUP, user)
-        .then((res) => {
-          const data = res as User;
-          localStorage.setItem(USER_KEY, JSON.stringify(data));
-          resolve(data);
+        .then((res: UserSignUpResponse) => {
+          localStorage.setItem(USER_KEY, JSON.stringify(res?.data));
+          resolve(res?.data?.user);
         })
         .catch((err) => {
           console.error('Error during sign-up:', err);
+          if (err?.response?.data?.message) {
+            message.error(err?.response?.data?.message);
+          }
           reject(err);
         });
     }),
 );
+
+export const resetUserStatus = createAction('user/resetStatus', () => ({
+  payload: initialState,
+}));
 
 export const userSlice = createSlice({
   name: 'user',
@@ -88,6 +107,14 @@ export const userSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
+      .addCase(fetchUser.fulfilled, (_state, action) => {
+        const state = _state;
+        state.user = action.payload;
+      })
+      .addCase(resetUserStatus, (_state) => {
+        const state = _state;
+        state.status = ERequestStatus.IDLE;
+      })
       .addCase(loginUser.pending, (_state) => {
         const state = _state;
         state.status = ERequestStatus.LOADING;
@@ -101,18 +128,10 @@ export const userSlice = createSlice({
         state.status = ERequestStatus.SUCCEEDED;
         state.user = action.payload;
       })
-      .addCase(logoutUser.pending, (_state) => {
-        const state = _state;
-        state.status = ERequestStatus.LOADING;
-      })
       .addCase(logoutUser.fulfilled, (_state) => {
         const state = _state;
-        state.status = ERequestStatus.SUCCEEDED;
+        state.status = ERequestStatus.IDLE;
         state.user = null;
-      })
-      .addCase(logoutUser.rejected, (_state) => {
-        const state = _state;
-        state.status = ERequestStatus.FAILED;
       })
       .addCase(createUser.pending, (_state) => {
         const state = _state;
@@ -130,7 +149,7 @@ export const userSlice = createSlice({
   },
 });
 
-export const selectUser = (state: RootState) => state.users.user;
-export const selectStatus = (state: RootState) => state.users.status;
+export const selectUser = (state: RootState) => state.user.user;
+export const selectStatus = (state: RootState) => state.user.status;
 
 export default userSlice.reducer;

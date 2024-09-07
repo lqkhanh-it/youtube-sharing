@@ -1,32 +1,22 @@
 import React from 'react';
 import { Form, Input, Button, Typography, Space, message } from 'antd';
 import { YoutubeOutlined } from '@ant-design/icons';
-import request, { HttpPaths } from '../../common/request';
 import './share.scss';
-import { hashPassword } from '../../common/encrypt';
+import { useAppDispatch } from '../../store/hooks';
+import { shareVideo } from '../../store/slices/video.slice';
 
 const { Title } = Typography;
 
-const ShareVideo: React.FC<{ callback: () => void }> = ({ callback }) => {
-  const onFinish = (values: { email: string; password: string }) => {
-    const { email, password } = values;
-    if (!email || !password) {
-      message.error('Please input your email and password');
+const ShareVideo: React.FC = () => {
+  const dispatch = useAppDispatch();
+  const onFinish = (values: { url: string }) => {
+    const { url } = values;
+    if (!url) {
+      message.error('Please input your Youtube link!');
       return;
     }
 
-    const pass = hashPassword(password);
-    request
-      .post(HttpPaths.LOGIN, { email, password: pass })
-      .then((res) => {
-        console.log(res);
-        if (callback) {
-          callback();
-        }
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    dispatch(shareVideo(url));
   };
 
   return (

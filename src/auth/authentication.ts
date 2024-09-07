@@ -37,6 +37,30 @@ export const authenticate = async (req, res, next) => {
 	}
 };
 
+export const wsAuthenticate = async (req, res, next) => {
+	const url = req.url.split('?')[1];
+	const token = url.slice(url.indexOf('=') + 1);
+	req.accessToken = token;
+
+	try {
+		const payload = await JWT.validate(req.accessToken);
+		validateTokenData(payload);
+
+		const user = await UserRepo.findById(new Types.ObjectId(payload.sub));
+		if (!user) throw new AuthFailureError('User not registered');
+		req.user = user;
+
+		const keystore = await KeystoreRepo.findforKey(req.user, payload.prm);
+		if (!keystore) throw new AuthFailureError('Invalid access token');
+		req.keystore = keystore;
+
+		return next();
+	} catch (e) {
+		if (e instanceof TokenExpiredError) throw new AccessTokenError(e.message);
+		throw e;
+	}
+};
+
 export default router.use(
 	validator(schema.auth, ValidationSource.HEADER),
 	asyncHandler(authenticate),

@@ -43,7 +43,11 @@ export const videoSlice = createSlice({
   extraReducers: (builder) => {
     builder.addCase(addVideo, (_state, action) => {
       const state = _state;
-      state.videos = [...action.payload, ...state.videos];
+      const newArr = [...action.payload, ...state.videos];
+      // delete duplicate
+      state.videos = newArr.filter(
+        (item, index) => newArr.findIndex((i) => i?._id === item?._id) === index,
+      );
     });
     builder.addCase(shareVideo.rejected, (_state) => {
       const state = _state;

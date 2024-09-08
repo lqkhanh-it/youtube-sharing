@@ -9,6 +9,7 @@ This is a video sharing app with source from youtube. In this website, users can
 - Realtime sharing video update
 - Keep realtime update new video from others
 
+> Demo Link: [Funny Movies](https://witty-dune-02f6b7b1e-preview.westus2.5.azurestaticapps.net/)
 
 ## Prerequisites: 
 There are some technology used in this project:

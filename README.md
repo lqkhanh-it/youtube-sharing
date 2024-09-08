@@ -204,11 +204,80 @@ _docker CLI required_
 ```sh
 docker buildx build ./ --tag v1
 ```
+
 Now you application was built and run though image container 
 
-### Frontend
-_Coming soon_
+Start app
+_docker-compose required_
+```sh
+docker-compose up -d
+```
 
+### Frontend
+
+Run check build your Front End App 
+```sh
+npm run lint
+npm run format
+npm run build
+```
+
+And then...
+_docker CLI required_
+```sh
+docker buildx build ./ --tag frontend
+```
+
+To start your app as Docker image 
+_docker-compose required_
+```sh
+docker-compose up -d
+```
+
+### Deployment step - in current situation
+
+1. Setup Docker and login with your [Docker Hub](https://hub.docker.com/repository/) account 
+```sh
+docker login
+```
+
+2. Build NodeJS by Docker Build
+```sh
+docker buildx build ./ --tag <your-account>/remi
+```
+
+3. After that, push your build to Docker Hub
+```sh
+docker push <your-account>/remi:latest
+```
+
+4. Setup your [Koyeb](https://app.koyeb.com/) and link to your Docker Hub
+
+5. Deploy your Nodejs App on Koyeb and get `API URL`
+
+6. Change API domain in `./frontend/.env` file
+> Note: you must change API for VITE_WEB_SOCKET and VITE_API_BASE_URL also
+
+7. Run check build your Front End App 
+```sh
+npm run lint
+npm run format
+npm run test
+npm run build
+```
+
+8. Setup your Azure account
+_SWA CLI required_
+```sh
+swa login 
+swa init
+```
+9. Change your config in file `./frontend/swa-cli.config.json`
+
+10. Deploy
+```sh
+swa deploy
+```
 
 ## Usage
 
